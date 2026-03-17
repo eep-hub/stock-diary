@@ -11,7 +11,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const logoutBtn = document.getElementById('logout-btn');
 
     const journalForm = document.getElementById('journal-form');
-    const journalEntries = document.getElementById('journal-entries');
+    const journalEntriesContainer = document.getElementById('journal-entries');
+
+    let entries = [];
 
     // --- Page Navigation ---
     showSignupLink.addEventListener('click', (e) => {
@@ -29,14 +31,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Authentication (Dummy) ---
     loginForm.addEventListener('submit', (e) => {
         e.preventDefault();
-        // In a real app, you'd validate credentials here
         loginPage.style.display = 'none';
         journalPage.style.display = 'block';
     });
 
     signupForm.addEventListener('submit', (e) => {
         e.preventDefault();
-        // In a real app, you'd create a user here
         signupPage.style.display = 'none';
         journalPage.style.display = 'block';
     });
@@ -50,26 +50,52 @@ document.addEventListener('DOMContentLoaded', () => {
     journalForm.addEventListener('submit', (e) => {
         e.preventDefault();
 
-        const ticker = document.getElementById('journal-ticker').value;
-        const entryPrice = document.getElementById('journal-entry-price').value;
-        const targetPrice = document.getElementById('journal-target-price').value;
-        const notes = document.getElementById('journal-notes').value;
+        const newEntry = {
+            ticker: document.getElementById('journal-ticker').value,
+            entryPrice: document.getElementById('journal-entry-price').value,
+            targetPrice: document.getElementById('journal-target-price').value,
+            notes: document.getElementById('journal-notes').value,
+            date: new Date(),
+        };
 
-        addJournalEntry({ ticker, entryPrice, targetPrice, notes });
+        entries.push(newEntry);
+        renderJournalEntries();
         journalForm.reset();
     });
 
-    function addJournalEntry(entry) {
-        const entryElement = document.createElement('div');
-        entryElement.classList.add('entry');
+    function renderJournalEntries() {
+        journalEntriesContainer.innerHTML = '<h2>Entries</h2>'; // Clear previous entries
 
-        entryElement.innerHTML = `
-            <h3>${entry.ticker}</h3>
-            <p><strong>Entry Price:</strong> ${entry.entryPrice}</p>
-            <p><strong>Target Price:</strong> ${entry.targetPrice}</p>
-            <p><strong>Notes:</strong> ${entry.notes}</p>
-        `;
+        // Group entries by date
+        const groupedEntries = entries.reduce((acc, entry) => {
+            const date = entry.date.toISOString().split('T')[0]; // Get YYYY-MM-DD
+            if (!acc[date]) {
+                acc[date] = [];
+            }
+            acc[date].push(entry);
+            return acc;
+        }, {});
 
-        journalEntries.appendChild(entryElement);
+        // Sort dates descending
+        const sortedDates = Object.keys(groupedEntries).sort((a, b) => new Date(b) - new Date(a));
+
+        for (const date of sortedDates) {
+            const dateHeader = document.createElement('h3');
+            dateHeader.textContent = date;
+            journalEntriesContainer.appendChild(dateHeader);
+
+            for (const entry of groupedEntries[date]) {
+                const entryElement = document.createElement('div');
+                entryElement.classList.add('entry');
+
+                entryElement.innerHTML = `
+                    <h4>${entry.ticker}</h4>
+                    <p><strong>Entry Price:</strong> ${entry.entryPrice}</p>
+                    <p><strong>Target Price:</strong> ${entry.targetPrice}</p>
+                    <p><strong>Notes:</strong> ${entry.notes}</p>
+                `;
+                journalEntriesContainer.appendChild(entryElement);
+            }
+        }
     }
 });

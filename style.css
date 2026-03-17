@@ -5,13 +5,13 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh;
 }
 
 #app {
     width: 100%;
     max-width: 800px;
-    margin: 0 auto;
+    margin: 2rem auto;
 }
 
 .page {
@@ -24,6 +24,7 @@ body {
 .form-container {
     max-width: 400px;
     margin: 0 auto;
+    margin-bottom: 2rem;
 }
 
 h2 {
@@ -85,9 +86,25 @@ header {
     padding: 0.5rem 1rem;
 }
 
+#journal-entries {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 1.5rem;
+}
+
 #journal-entries h2 {
     text-align: left;
     margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #eee;
+}
+
+#journal-entries h3 {
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #eee;
+    font-size: 1.4rem;
 }
 
 .entry {
@@ -98,7 +115,8 @@ header {
     border: 1px solid #eee;
 }
 
-.entry h3 {
+.entry h4 {
     margin-top: 0;
     margin-bottom: 0.5rem;
+    font-size: 1.2rem;
 }
