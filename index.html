@@ -43,17 +43,15 @@
             </header>
             <main>
                 <div class="form-container">
-                    <h2>New Entry</h2>
                     <form id="journal-form">
                         <input type="text" id="journal-ticker" placeholder="Ticker (e.g., AAPL)" required>
                         <input type="number" id="journal-entry-price" placeholder="Entry Price" step="0.01" required>
                         <input type="number" id="journal-target-price" placeholder="Target Price" step="0.01" required>
-                        <textarea id="journal-notes" placeholder="Notes"></textarea>
+                        <textarea id="journal-notes" placeholder="What were your reasons for entering this trade?"></textarea>
                         <button type="submit">Add Entry</button>
                     </form>
                 </div>
                 <div id="journal-entries">
-                    <h2>Entries</h2>
                     <!-- Entries will be dynamically added here -->
                 </div>
             </main>
